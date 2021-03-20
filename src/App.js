@@ -1,15 +1,15 @@
 import './App.css';
 import useToken from './token';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, useHistory } from 'react-router-dom';
 import Login from './login'
 
 function App() {
-  const { token, setToken } = useToken();
+  let history = useHistory()
   if (!token) {
-    return(<Login setToken={setToken} />)
+    history.push("/login")
   }
   return(
-    <h1>{token}</h1>
+    <p>Hello there</p>
   )
 }
 export default App;

@@ -2,10 +2,13 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import api from './api'
 import './login.css';
-import { Link, BrowserRouter as Router } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import useToken from './token'
+var sha256 = require('js-sha256').sha256;
 
 
-export default function Login({ setToken }) {
+export default function Login() {
+    const { token, setToken } = useToken();
     const [username, setUserName] = useState('');
     const [password, setPassword] = useState('');
     const [errorText, setErrorText] = useState()
@@ -36,20 +39,20 @@ export default function Login({ setToken }) {
       const token = await api.postData(
         "http://127.0.0.1:5000/login",
         {'Content-Type': 'application/json'},
-        {"username" : username, "password" : password})
+        {"username" : username, "password" : sha256(password)})
       if (token.data == false) {
           console.log("Failiure " + token.error)
-          setErrorText("Error, contact Tomer the king")
+          setErrorText("Error")
           return
       }
-      console.log(token)
      if (token.data.status == false) {
           setErrorText("Incorrect username or password")
+          return
       }
-      else{
-        console.log(token.data.token)
-        setToken(token.data.token);
-      }
+      var date = (new Date()).getTime() + token.data.exp*60000
+      localStorage.setItem("tokenExp", date.toString())
+      setToken(token.data.token);
+      
     }
   
     return(
@@ -65,7 +68,7 @@ export default function Login({ setToken }) {
               <p>Don't have an accout?</p>
             </th>
             <th>
-              <Router><Link>Register</Link></Router>
+              <Link to="/register">Register</Link>
             </th>
             </tr>
           </table>
@@ -74,8 +77,4 @@ export default function Login({ setToken }) {
       </div>
 
     )
-  }
-  
-  Login.propTypes = {
-    setToken: PropTypes.func.isRequired
-  };
+}
