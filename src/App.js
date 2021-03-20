@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, useHistory } from 'react-router-dom';
 import Login from './login'
 
 function App() {
+  const { token, setToken } = useToken();
   let history = useHistory()
   if (!token) {
     history.push("/login")
