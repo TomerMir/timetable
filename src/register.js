@@ -7,10 +7,14 @@ var sha256 = require('js-sha256').sha256;
 
 
 export default function Register()  {
+    let history = useHistory()
+    const { validateToken } = useToken();
+    if (validateToken()) {
+      history.push("/")
+    }
     const [username, setUserName] = useState('');
     const [password, setPassword] = useState('');
     const [errorText, setErrorText] = useState()
-    let history = useHistory()
     const handleSubmit = async e => {
         e.preventDefault();
   
