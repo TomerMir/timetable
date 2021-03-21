@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import api from './api'
 import useToken from './token'
 import { useHistory } from 'react-router-dom';
+import { Helmet } from 'react-helmet'
 var sha256 = require('js-sha256').sha256;
 
 
@@ -57,6 +58,9 @@ export default function Register()  {
     
       return(
         <div className="login">
+          <Helmet>
+            <title>Register</title>
+          </Helmet>
           <h2 className="login-header">Register</h2>
           <form onSubmit={handleSubmit} class="login-container">
             <input type="text" onClick={e => setErrorText('')} onChange={e => setUserName(e.target.value)} placeholder="Username"/>

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import api from './api'
 import { Link, useHistory } from 'react-router-dom';
 import useToken from './token'
+import { Helmet } from 'react-helmet'
 var sha256 = require('js-sha256').sha256;
 
 
@@ -59,6 +60,9 @@ export default function Login() {
   
     return(
       <div className="login">
+        <Helmet>
+          <title>Login</title>
+        </Helmet>
         <h2 className="login-header">Log in</h2>
         <form onSubmit={handleSubmit} class="login-container">
           <input type="text" onClick={e => setErrorText('')} onChange={e => setUserName(e.target.value)} placeholder="Username"/>
