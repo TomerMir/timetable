@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import api from './api'
-import './login.css';
 import { Link, useHistory } from 'react-router-dom';
 import useToken from './token'
 var sha256 = require('js-sha256').sha256;
@@ -56,7 +55,6 @@ export default function Login() {
       var date = (new Date()).getTime() + token.data.exp*60000
       localStorage.setItem("tokenExp", date.toString())
       setToken(token.data.token);
-      
     }
   
     return(

@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import api from './api'
-import './login.css';
 import useToken from './token'
 import { useHistory } from 'react-router-dom';
 var sha256 = require('js-sha256').sha256;
