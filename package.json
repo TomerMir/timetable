@@ -13,6 +13,7 @@
     "react-helmet": "^6.1.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
+    "react-widgets": "^4.6.1",
     "web-vitals": "^1.1.1"
   },
   "scripts": {

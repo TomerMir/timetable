@@ -1,7 +1,8 @@
 import './App.css';
 import useToken from './token';
 import { BrowserRouter as Router, Route, useHistory } from 'react-router-dom';
-import { Helmet } from 'react-helmet'
+import Table from './table'
+import React, { useState } from 'react';
 
 function App() {
   const { validateToken } = useToken();
@@ -11,10 +12,7 @@ function App() {
   }
   return(
     <div>
-      <Helmet>
-        <title>Timetable</title>
-      </Helmet>
-      <p>Hello there</p>
+      <Table />
     </div>
   )
 }
