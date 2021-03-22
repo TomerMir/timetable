@@ -13,16 +13,13 @@ export default function useToken() {
     return exp
   };
 
-  const [token, setToken] = useState(getToken());
-
   const saveToken = userToken => {
     localStorage.setItem('token', JSON.stringify(userToken));
-    setToken(userToken);
   };
 
   const validateToken = () => {
+    const token = getToken()
     try {
-      const token = getToken()
       if(!token){
         console.log("Token was null")
         localStorage.clear()
@@ -52,6 +49,6 @@ export default function useToken() {
   return {
     setToken: saveToken,
     validateToken,
-    token
+    getToken
   }
 }

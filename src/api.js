@@ -33,10 +33,11 @@ async function fetchData(dataSource) {
   }
   
   async function FetchDataAuth(dataSource) {
-    const { token, validateToken } = useToken();
+    const { getToken, validateToken } = useToken();
+    const token = getToken()
     try {
       if (!validateToken()) {
-        return {data: false, error: "invalid token"}
+        return {data: false, error: "Invalid token"}
       }
       const headers = {'Authorization': 'Bearer '+ token.toString()}
       const data = await fetch(host+dataSource, {
@@ -44,9 +45,8 @@ async function fetchData(dataSource) {
         headers: headers,
       });
       const dataJSON = await data.json();
-  
       if (dataJSON) {
-        return await { data: dataJSON, error: false };
+        return { data: dataJSON, error: false };
       }
     } catch (error) {
       return { data: false, error: "Could not comunicate with server" };
@@ -54,7 +54,8 @@ async function fetchData(dataSource) {
   }
   
   async function PostDataAuth(dataSource, headers, content) {
-    const { token, validateToken } = useToken();
+    const { getToken, validateToken } = useToken();
+    const token = getToken()
     try {
       if (!validateToken()) {
         return {data: false, error: "invalid token"}
