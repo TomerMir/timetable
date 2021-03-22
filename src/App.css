@@ -78,3 +78,37 @@ body {
 .login input[type="submit"]:focus {
   border-color: #05a;
 }
+
+.timetable {
+  color: white;
+  text-align: center;
+  font-size: x-large;
+  border-collapse: collapse;
+}
+.my_a {
+  color: inherit;
+  cursor: inherit;
+}
+.hour {
+  border: solid 2px #eec130;
+  width: 100px;
+}
+.hhour {
+  border: double 2px red;
+  width: 100px;
+}
+.golden {
+  color: #eec130;
+}
+.empty {
+  background-color: rgb(75, 75, 75);
+  border: solid 2px #eec130;
+}
+.hempty {
+  background-color: rgb(75, 75, 75);
+  border: double 2px red;
+}
+.time {
+  font-size: medium;
+  background-color: rgb(75, 75, 75);
+}

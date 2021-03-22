@@ -39,7 +39,7 @@ export default function Register()  {
         }
   
         const token = await api.postData(
-          "http://127.0.0.1:5000/register",
+          "register",
           {'Content-Type': 'application/json'},
           {"username" : username, "password" : sha256(password)})
         if (token.data == false) {
@@ -55,7 +55,8 @@ export default function Register()  {
 
         history.push('/login')
       }
-    
+      
+      document.getElementsByTagName('html')[0].setAttribute("dir", "ltr");
       return(
         <div className="login">
           <Helmet>

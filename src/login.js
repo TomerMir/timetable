@@ -41,7 +41,7 @@ export default function Login() {
       }
 
       const token = await api.postData(
-        "http://127.0.0.1:5000/login",
+        "login",
         {'Content-Type': 'application/json'},
         {"username" : username, "password" : sha256(password)})
       if (token.data == false) {
@@ -57,7 +57,7 @@ export default function Login() {
       localStorage.setItem("tokenExp", date.toString())
       setToken(token.data.token);
     }
-  
+    document.getElementsByTagName('html')[0].setAttribute("dir", "ltr");
     return(
       <div className="login">
         <Helmet>
