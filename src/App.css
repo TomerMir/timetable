@@ -97,7 +97,8 @@ body {
 }
 .now {
   border: double 2px red;
-  width: 100px;
+  background-color: dimgray;
+  height: 40px;
 }
 .golden {
   color: #eec130;
@@ -107,10 +108,6 @@ body {
 .empty {
   background-color: rgb(75, 75, 75);
   border: solid 2px #eec130;
-}
-.hempty {
-  background-color: rgb(75, 75, 75);
-  border: double 2px red;
 }
 .time {
   font-size: medium;
