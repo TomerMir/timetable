@@ -39,7 +39,7 @@ export default function Register()  {
         }
   
         const token = await api.postData(
-          "register",
+          "api/register",
           {'Content-Type': 'application/json'},
           {"username" : username, "password" : sha256(password)})
         if (token.data == false) {

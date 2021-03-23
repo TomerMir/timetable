@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { DropdownList } from 'react-widgets'
 import "react-widgets/dist/css/react-widgets.css";
 
-const lessons = ["עברית","אנגלית","תוכנה","פיזיקה","ספרות","תנ״ך","מתמטיקה","היסטוריה","אזרחות", "חלון"]
+const lessons = ["עברית","אנגלית","תוכנה","פיזיקה","ספרות","תנ״ך","מתמטיקה","היסטוריה","אזרחות","חלון", "חינוך"] 
 
 export default function Cell(props){
     if (props.isEditable) {

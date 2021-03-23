@@ -60,7 +60,7 @@ async function fetchData(dataSource) {
       if (!validateToken()) {
         return {data: false, error: "invalid token"}
       }
-      headers.Authorization = token 
+      headers.Authorization = 'Bearer '+ token.toString() 
       const data = await fetch(host+dataSource, {
         method: 'POST',
         headers: headers,

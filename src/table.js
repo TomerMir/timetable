@@ -19,12 +19,13 @@ class Table extends Component {
 		const window = "חלון"
 		const bible = "תנ״ך"
 		const computer_science = "תוכנה"
+		const education = "חינוך"
 
 		this.state = {
 			edit: false,
 		   	editOrSave : "edit",
 			data : [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-			lessons : {0:window, 1:hebrew, 2:english, 3:history, 4:ezrahut, 5:literature, 6:maths, 7:physics, 8:bible, 9:computer_science},
+			lessons : {0:window, 1:hebrew, 2:english, 3:history, 4:ezrahut, 5:literature, 6:maths, 7:physics, 8:bible, 9:computer_science, 10:education},
 			reverse_lessons : {},
 			error : ""
 	   };  
@@ -38,16 +39,20 @@ class Table extends Component {
 	   this.state.reverse_lessons[physics] = 7
 	   this.state.reverse_lessons[bible] = 8
 	   this.state.reverse_lessons[computer_science] = 9
+	   this.state.reverse_lessons[education] = 10
 	}
 
 	async componentDidMount() {
 		try {
-			const api_result = await api.FetchDataAuth('gettable')
+			const api_result = await api.FetchDataAuth('api/gettable')
   			if (api_result.data==false) {
   				this.setState({error : "Can't connect to the server"})
+				  return
   			}
  			if (api_result.data.status==false) {
+				console.log("result.data.status = false")
 				this.setState({error : "API Server refused"})
+				return
   			}
  		 	this.setState({data : api_result.data.data})
 		} 
@@ -56,12 +61,17 @@ class Table extends Component {
 		}
 	}
   
-	changeEdit = () => {
+	changeEdit =  async() => {
       	this.setState({edit : !this.state.edit})
+		this.setState({error : ""})
       	if (this.state.editOrSave == "edit") {
 			this.setState({editOrSave : "save"})
     	}
     	else{
+			let api_result = await api.PostDataAuth('api/changetable', {'Content-Type': 'application/json'}, {'data' : this.state.data})
+			if (!api_result || !api_result.data.status) {
+				this.setState({error : "Faild to commit to the database"})
+			}
 			this.setState({editOrSave : "edit"})
 		}
 	}

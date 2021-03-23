@@ -41,7 +41,7 @@ export default function Login() {
       }
 
       const token = await api.postData(
-        "login",
+        "api/login",
         {'Content-Type': 'application/json'},
         {"username" : username, "password" : sha256(password)})
       if (token.data == false) {
