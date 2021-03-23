@@ -7,23 +7,53 @@ class Table extends Component {
 
 	constructor(props) {
 		super(props);
-		document.getElementsByTagName('html')[0].setAttribute("dir", "rtl");
+		document.getElementsByTagName('html')[0].setAttribute("dir", "rtl")
+
+		const hebrew = "עברית"
+		const english = "אנגלית"
+		const history = "היסטוריה"
+		const ezrahut = "אזרחות"
+		const literature = "ספרות"
+		const maths = "מתמטיקה"
+		const physics = "פיזיקה"
+		const window = "חלון"
+		const bible = "תנ״ך"
+		const computer_science = "תוכנה"
+
 		this.state = {
 			edit: false,
 		   	editOrSave : "edit",
-			data : []
-	   };  		
+			data : [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+			lessons : {0:window, 1:hebrew, 2:english, 3:history, 4:ezrahut, 5:literature, 6:maths, 7:physics, 8:bible, 9:computer_science},
+			reverse_lessons : {},
+			error : ""
+	   };  
+	   this.state.reverse_lessons[window] = 0
+	   this.state.reverse_lessons[hebrew] = 1
+	   this.state.reverse_lessons[english] = 2
+	   this.state.reverse_lessons[history] = 3
+	   this.state.reverse_lessons[ezrahut] = 4
+	   this.state.reverse_lessons[literature] = 5
+	   this.state.reverse_lessons[maths] = 6
+	   this.state.reverse_lessons[physics] = 7
+	   this.state.reverse_lessons[bible] = 8
+	   this.state.reverse_lessons[computer_science] = 9
 	}
 
 	async componentDidMount() {
-		const api_result = await api.FetchDataAuth('gettable')
-  		if (api_result.data==false) {
-  			//error while fething the api
-  		}
- 		if (api_result.data.status==false) {
-  			//the api returned error
-  		}
- 		 this.setState({data : api_result.data.data})
+		try {
+			const api_result = await api.FetchDataAuth('gettable')
+  			if (api_result.data==false) {
+  				this.setState({error : "Can't connect to the server"})
+  			}
+ 			if (api_result.data.status==false) {
+				this.setState({error : "API Server refused"})
+  			}
+ 		 	this.setState({data : api_result.data.data})
+		} 
+		catch (error) {
+			this.setState({error : "Unexpected error occured"})
+		}
 	}
   
 	changeEdit = () => {
@@ -35,109 +65,177 @@ class Table extends Component {
 			this.setState({editOrSave : "edit"})
 		}
 	}
+
+	valueChanged = (value, index) => {
+		console.log("value = " + value +"  index = "+ index)
+		let items = this.state.data
+		items[index] = this.state.reverse_lessons[value]
+		this.setState({data : items})
+	}
+
   render(){
 	return(
-		<div>
+		<div style={{textAlign:"center"}}>
 		  <Helmet>
 			<title>Timetable</title>
 		  </Helmet>
 		  <table className="timetable">
 				<tr>
 					<td style={{border: "double 2px #eec130"}}>המערכת שלך</td>
-					<td>ראשון</td>
+					<td className="head-width">ראשון</td>
 					<td className="golden">שני</td>
-					<td>שלישי</td>
+					<td className="head-width">שלישי</td>
 					<td className="golden">רביעי</td>
-					<td>חמישי</td>
+					<td className="head-width">חמישי</td>
 					<td className="golden">שישי</td>
 				</tr>
 				<tr>
-					<td>שיעור #1</td>
-					{/* שיעורים */}
+					<td className = 'side-height'>שיעור #1</td>
+					<td className="hour" rowSpan="2"><Cell lessonName={this.state.lessons[this.state.data[0]]} changeValue={this.valueChanged} index={0} isEditable={this.state.edit}></Cell></td>
+					<td className="hour" rowSpan="2"><Cell lessonName={this.state.lessons[this.state.data[12]]} changeValue={this.valueChanged} index={12} isEditable={this.state.edit}></Cell></td>
+					<td className="hour" rowSpan="2"><Cell lessonName={this.state.lessons[this.state.data[24]]} changeValue={this.valueChanged} index={24} isEditable={this.state.edit}></Cell></td>
+					<td className="hour" rowSpan="2"><Cell lessonName={this.state.lessons[this.state.data[36]]} changeValue={this.valueChanged} index={36} isEditable={this.state.edit}></Cell></td>
+					<td className="hour" rowSpan="2"><Cell lessonName={this.state.lessons[this.state.data[48]]} changeValue={this.valueChanged} index={48} isEditable={this.state.edit}></Cell></td>
+					<td className="hour" rowSpan="2"><Cell lessonName={this.state.lessons[this.state.data[60]]} changeValue={this.valueChanged} index={60} isEditable={this.state.edit}></Cell></td>
 				</tr>
 				<tr>
 					<td className="time">08:20 → 07:45</td>
 				</tr>
 				<tr>
-					<td>שיעור #2</td>
-					{/* שיעורים */}
+					<td className = 'side-height'>שיעור #2</td>
+					<td className="hour" rowSpan="2"><Cell lessonName={this.state.lessons[this.state.data[1]]} changeValue={this.valueChanged} index={1} isEditable={this.state.edit}></Cell></td>
+					<td className="hour" rowSpan="2"><Cell lessonName={this.state.lessons[this.state.data[13]]} changeValue={this.valueChanged} index={13} isEditable={this.state.edit}></Cell></td>
+					<td className="hour" rowSpan="2"><Cell lessonName={this.state.lessons[this.state.data[25]]} changeValue={this.valueChanged} index={25} isEditable={this.state.edit}></Cell></td>
+					<td className="hour" rowSpan="2"><Cell lessonName={this.state.lessons[this.state.data[37]]} changeValue={this.valueChanged} index={37} isEditable={this.state.edit}></Cell></td>
+					<td className="hour" rowSpan="2"><Cell lessonName={this.state.lessons[this.state.data[49]]} changeValue={this.valueChanged} index={49} isEditable={this.state.edit}></Cell></td>
+					<td className="hour" rowSpan="2"><Cell lessonName={this.state.lessons[this.state.data[61]]} changeValue={this.valueChanged} index={61} isEditable={this.state.edit}></Cell></td>
 				</tr>
 				<tr>
 					<td className="time">09:00 → 08:20</td>
 				</tr>
 				<tr>
-					<td>שיעור #3</td>
-					{/* שיעורים */}
+					<td className = 'side-height'> שיעור #3</td>
+					<td className="hour" rowSpan="2"><Cell lessonName={this.state.lessons[this.state.data[2]]} changeValue={this.valueChanged} index={2} isEditable={this.state.edit}></Cell></td>
+					<td className="hour" rowSpan="2"><Cell lessonName={this.state.lessons[this.state.data[14]]} changeValue={this.valueChanged} index={14} isEditable={this.state.edit}></Cell></td>
+					<td className="hour" rowSpan="2"><Cell lessonName={this.state.lessons[this.state.data[26]]} changeValue={this.valueChanged} index={26} isEditable={this.state.edit}></Cell></td>
+					<td className="hour" rowSpan="2"><Cell lessonName={this.state.lessons[this.state.data[38]]} changeValue={this.valueChanged} index={38} isEditable={this.state.edit}></Cell></td>
+					<td className="hour" rowSpan="2"><Cell lessonName={this.state.lessons[this.state.data[50]]} changeValue={this.valueChanged} index={50} isEditable={this.state.edit}></Cell></td>
+					<td className="hour" rowSpan="2"><Cell lessonName={this.state.lessons[this.state.data[62]]} changeValue={this.valueChanged} index={62} isEditable={this.state.edit}></Cell></td>
 				</tr>
 				<tr>
 					<td className="time">10:05 → 09:30</td>
 				</tr>
 				<tr>
-					<td>שיעור #4</td>
-					{/* שיעורים */}
+					<td className = 'side-height'>שיעור #4</td>
+					<td className="hour" rowSpan="2"><Cell lessonName={this.state.lessons[this.state.data[3]]} changeValue={this.valueChanged} index={3} isEditable={this.state.edit}></Cell></td>
+					<td className="hour" rowSpan="2"><Cell lessonName={this.state.lessons[this.state.data[15]]} changeValue={this.valueChanged} index={15} isEditable={this.state.edit}></Cell></td>
+					<td className="hour" rowSpan="2"><Cell lessonName={this.state.lessons[this.state.data[27]]} changeValue={this.valueChanged} index={27} isEditable={this.state.edit}></Cell></td>
+					<td className="hour" rowSpan="2"><Cell lessonName={this.state.lessons[this.state.data[39]]} changeValue={this.valueChanged} index={39} isEditable={this.state.edit}></Cell></td>
+					<td className="hour" rowSpan="2"><Cell lessonName={this.state.lessons[this.state.data[51]]} changeValue={this.valueChanged} index={51} isEditable={this.state.edit}></Cell></td>
+					<td className="hour" rowSpan="2"><Cell lessonName={this.state.lessons[this.state.data[63]]} changeValue={this.valueChanged} index={63} isEditable={this.state.edit}></Cell></td>
 				</tr>
 				<tr>
 					<td className="time">10:45 → 10:05</td>
 				</tr>
 				<tr>
-					<td>שיעור #5</td>
-					{/* שיעורים */}
+					<td className = 'side-height'>שיעור #5</td>
+					<td className="hour" rowSpan="2"><Cell lessonName={this.state.lessons[this.state.data[4]]} changeValue={this.valueChanged} index={4} isEditable={this.state.edit}></Cell></td>
+					<td className="hour" rowSpan="2"><Cell lessonName={this.state.lessons[this.state.data[16]]} changeValue={this.valueChanged} index={16} isEditable={this.state.edit}></Cell></td>
+					<td className="hour" rowSpan="2"><Cell lessonName={this.state.lessons[this.state.data[28]]} changeValue={this.valueChanged} index={28} isEditable={this.state.edit}></Cell></td>
+					<td className="hour" rowSpan="2"><Cell lessonName={this.state.lessons[this.state.data[40]]} changeValue={this.valueChanged} index={40} isEditable={this.state.edit}></Cell></td>
+					<td className="hour" rowSpan="2"><Cell lessonName={this.state.lessons[this.state.data[52]]} changeValue={this.valueChanged} index={52} isEditable={this.state.edit}></Cell></td>
+					<td className="hour" rowSpan="2"><Cell lessonName={this.state.lessons[this.state.data[64]]} changeValue={this.valueChanged} index={64} isEditable={this.state.edit}></Cell></td>
 				</tr>
 				<tr>
 					<td className="time">11:55 → 11:15</td>
 				</tr>
 				<tr>
-					<td>שיעור #6</td>
-					{/* שיעורים */}
+					<td className = 'side-height'>שיעור #6</td>
+					<td className="hour" rowSpan="2"><Cell lessonName={this.state.lessons[this.state.data[5]]} changeValue={this.valueChanged} index={5} isEditable={this.state.edit}></Cell></td>
+					<td className="hour" rowSpan="2"><Cell lessonName={this.state.lessons[this.state.data[17]]} changeValue={this.valueChanged} index={17} isEditable={this.state.edit}></Cell></td>
+					<td className="hour" rowSpan="2"><Cell lessonName={this.state.lessons[this.state.data[29]]} changeValue={this.valueChanged} index={29} isEditable={this.state.edit}></Cell></td>
+					<td className="hour" rowSpan="2"><Cell lessonName={this.state.lessons[this.state.data[41]]} changeValue={this.valueChanged} index={41} isEditable={this.state.edit}></Cell></td>
+					<td className="hour" rowSpan="2"><Cell lessonName={this.state.lessons[this.state.data[53]]} changeValue={this.valueChanged} index={53} isEditable={this.state.edit}></Cell></td>
+					<td className="hour" rowSpan="2"><Cell lessonName={this.state.lessons[this.state.data[65]]} changeValue={this.valueChanged} index={65} isEditable={this.state.edit}></Cell></td>
 				</tr>
 				<tr>
 					<td className="time">12:30 → 11:55</td>
 				</tr>
 				<tr>
-					<td>שיעור #7</td>
-					{/* שיעורים */}
+					<td className = 'side-height'>שיעור #7</td>
+					<td className="hour" rowSpan="2"><Cell lessonName={this.state.lessons[this.state.data[6]]} changeValue={this.valueChanged} index={6} isEditable={this.state.edit}></Cell></td>
+					<td className="hour" rowSpan="2"><Cell lessonName={this.state.lessons[this.state.data[18]]} changeValue={this.valueChanged} index={18} isEditable={this.state.edit}></Cell></td>
+					<td className="hour" rowSpan="2"><Cell lessonName={this.state.lessons[this.state.data[30]]} changeValue={this.valueChanged} index={30} isEditable={this.state.edit}></Cell></td>
+					<td className="hour" rowSpan="2"><Cell lessonName={this.state.lessons[this.state.data[42]]} changeValue={this.valueChanged} index={42} isEditable={this.state.edit}></Cell></td>
+					<td className="hour" rowSpan="2"><Cell lessonName={this.state.lessons[this.state.data[54]]} changeValue={this.valueChanged} index={54} isEditable={this.state.edit}></Cell></td>
+					<td className="hour" rowSpan="2"><Cell lessonName={this.state.lessons[this.state.data[66]]} changeValue={this.valueChanged} index={66} isEditable={this.state.edit}></Cell></td>
 				</tr>
 				<tr>
 					<td className="time">13:55 → 13:15</td>
 				</tr>
 				<tr>
-					<td>שיעור #8</td>
-					{/* שיעורים */}
+					<td className = 'side-height'>שיעור #8</td>
+					<td className="hour" rowSpan="2"><Cell lessonName={this.state.lessons[this.state.data[7]]} changeValue={this.valueChanged} index={7} isEditable={this.state.edit}></Cell></td>
+					<td className="hour" rowSpan="2"><Cell lessonName={this.state.lessons[this.state.data[19]]} changeValue={this.valueChanged} index={19} isEditable={this.state.edit}></Cell></td>
+					<td className="hour" rowSpan="2"><Cell lessonName={this.state.lessons[this.state.data[31]]} changeValue={this.valueChanged} index={31} isEditable={this.state.edit}></Cell></td>
+					<td className="hour" rowSpan="2"><Cell lessonName={this.state.lessons[this.state.data[43]]} changeValue={this.valueChanged} index={43} isEditable={this.state.edit}></Cell></td>
+					<td className="hour" rowSpan="2"><Cell lessonName={this.state.lessons[this.state.data[55]]} changeValue={this.valueChanged} index={55} isEditable={this.state.edit}></Cell></td>
+					<td className="hour" rowSpan="2"><Cell lessonName={this.state.lessons[this.state.data[67]]} changeValue={this.valueChanged} index={67} isEditable={this.state.edit}></Cell></td>
 				</tr>
 				<tr>
 					<td className="time">14:30 → 13:55</td>
 				</tr>
 				<tr>
-					<td>שיעור #9</td>
-					{/* שיעורים */}
+					<td className = 'side-height'>שיעור #9</td>
+					<td className="hour" rowSpan="2"><Cell lessonName={this.state.lessons[this.state.data[8]]} changeValue={this.valueChanged} index={8} isEditable={this.state.edit}></Cell></td>
+					<td className="hour" rowSpan="2"><Cell lessonName={this.state.lessons[this.state.data[20]]} changeValue={this.valueChanged} index={20} isEditable={this.state.edit}></Cell></td>
+					<td className="hour" rowSpan="2"><Cell lessonName={this.state.lessons[this.state.data[32]]} changeValue={this.valueChanged} index={32} isEditable={this.state.edit}></Cell></td>
+					<td className="hour" rowSpan="2"><Cell lessonName={this.state.lessons[this.state.data[44]]} changeValue={this.valueChanged} index={44} isEditable={this.state.edit}></Cell></td>
+					<td className="hour" rowSpan="2"><Cell lessonName={this.state.lessons[this.state.data[56]]} changeValue={this.valueChanged} index={56} isEditable={this.state.edit}></Cell></td>
+					<td className="hour" rowSpan="2"><Cell lessonName={this.state.lessons[this.state.data[68]]} changeValue={this.valueChanged} index={68} isEditable={this.state.edit}></Cell></td>
 				</tr>
 				<tr>
 					<td className="time">15:20 → 14:45</td>
 				</tr>
 				<tr>
-					<td>שיעור #10</td>
-					{/* שיעורים */}
+					<td className = 'side-height'>שיעור #10</td>
+					<td className="hour" rowSpan="2"><Cell lessonName={this.state.lessons[this.state.data[9]]} changeValue={this.valueChanged} index={9} isEditable={this.state.edit}></Cell></td>
+					<td className="hour" rowSpan="2"><Cell lessonName={this.state.lessons[this.state.data[21]]} changeValue={this.valueChanged} index={21} isEditable={this.state.edit}></Cell></td>
+					<td className="hour" rowSpan="2"><Cell lessonName={this.state.lessons[this.state.data[33]]} changeValue={this.valueChanged} index={33} isEditable={this.state.edit}></Cell></td>
+					<td className="hour" rowSpan="2"><Cell lessonName={this.state.lessons[this.state.data[45]]} changeValue={this.valueChanged} index={45} isEditable={this.state.edit}></Cell></td>
+					<td className="hour" rowSpan="2"><Cell lessonName={this.state.lessons[this.state.data[57]]} changeValue={this.valueChanged} index={57} isEditable={this.state.edit}></Cell></td>
+					<td className="hour" rowSpan="2"><Cell lessonName={this.state.lessons[this.state.data[69]]} changeValue={this.valueChanged} index={69} isEditable={this.state.edit}></Cell></td>
 				</tr>
 				<tr>
 					<td className="time">16:00 → 15:20</td>
 				</tr>
 		  		<tr>
-					<td>שיעור #11</td>
-					{/* שיעורים */}
+					<td className = 'side-height'>שיעור #11</td>
+					<td className="hour" rowSpan="2"><Cell lessonName={this.state.lessons[this.state.data[10]]} changeValue={this.valueChanged} index={10} isEditable={this.state.edit}></Cell></td>
+					<td className="hour" rowSpan="2"><Cell lessonName={this.state.lessons[this.state.data[22]]} changeValue={this.valueChanged} index={22} isEditable={this.state.edit}></Cell></td>
+					<td className="hour" rowSpan="2"><Cell lessonName={this.state.lessons[this.state.data[34]]} changeValue={this.valueChanged} index={34} isEditable={this.state.edit}></Cell></td>
+					<td className="hour" rowSpan="2"><Cell lessonName={this.state.lessons[this.state.data[46]]} changeValue={this.valueChanged} index={46} isEditable={this.state.edit}></Cell></td>
+					<td className="hour" rowSpan="2"><Cell lessonName={this.state.lessons[this.state.data[58]]} changeValue={this.valueChanged} index={58} isEditable={this.state.edit}></Cell></td>
+					<td className="hour" rowSpan="2"><Cell lessonName={this.state.lessons[this.state.data[70]]} changeValue={this.valueChanged} index={70} isEditable={this.state.edit}></Cell></td>
 				</tr>
 				<tr>
 					<td className="time">16:55 → 16:15</td>
 				</tr>
 		  		<tr>
-					<td>שיעור #12</td>
-					{/* שיעורים */}
+					<td className = 'side-height'>שיעור #12</td>
+					<td className="hour" rowSpan="2"><Cell lessonName={this.state.lessons[this.state.data[11]]} changeValue={this.valueChanged} index={11} isEditable={this.state.edit}></Cell></td>
+					<td className="hour" rowSpan="2"><Cell lessonName={this.state.lessons[this.state.data[23]]} changeValue={this.valueChanged} index={23} isEditable={this.state.edit}></Cell></td>
+					<td className="hour" rowSpan="2"><Cell lessonName={this.state.lessons[this.state.data[35]]} changeValue={this.valueChanged} index={35} isEditable={this.state.edit}></Cell></td>
+					<td className="hour" rowSpan="2"><Cell lessonName={this.state.lessons[this.state.data[47]]} changeValue={this.valueChanged} index={47} isEditable={this.state.edit}></Cell></td>
+					<td className="hour" rowSpan="2"><Cell lessonName={this.state.lessons[this.state.data[59]]} changeValue={this.valueChanged} index={59} isEditable={this.state.edit}></Cell></td>
+					<td className="hour" rowSpan="2"><Cell lessonName={this.state.lessons[this.state.data[71]]} changeValue={this.valueChanged} index={71} isEditable={this.state.edit}></Cell></td>
 				</tr>
 				<tr>
 					<td className="time">17:30 → 16:55</td>
 				</tr>
 			</table>
-		  <Cell isEditable={this.state.edit} lessonName="מתמטיקה"/>
-		  <button onClick={this.changeEdit}>{this.state.editOrSave}</button>
+		  <a onClick={this.changeEdit} className='button3'>{this.state.editOrSave}</a>
+		  <h2 style={{color: 'red'}}>{this.state.error}</h2>
 		</div>
 	  )
   }

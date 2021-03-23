@@ -11,7 +11,6 @@ body {
   font-size: 16px;
 }
 
-/* Reset top and bottom margins from certain elements */
 .login-header,
 .login p {
   margin-top: 0;
@@ -57,7 +56,6 @@ body {
   color: #555;
 }
 
-/* Text fields' focus effect */
 .login input[type="text"]:focus,
 .login input[type="password"]:focus {
   border-color: #888;
@@ -74,31 +72,37 @@ body {
   background: #17c;
 }
 
-/* Buttons' focus effect */
 .login input[type="submit"]:focus {
   border-color: #05a;
 }
 
 .timetable {
   color: white;
+  margin-left: auto;
+  margin-right: auto;
   text-align: center;
   font-size: x-large;
   border-collapse: collapse;
+  height: 750px;
+  width: 1500px;
+  margin-top: 25px;
+  table-layout:fixed;
+  word-break:break-all;
+  table-layout: fixed;
 }
-.my_a {
-  color: inherit;
-  cursor: inherit;
-}
+
 .hour {
   border: solid 2px #eec130;
-  width: 100px;
+  height: 40px;
 }
-.hhour {
+.now {
   border: double 2px red;
   width: 100px;
 }
 .golden {
   color: #eec130;
+  border: solid 2px #eec130;
+  width: 200px;
 }
 .empty {
   background-color: rgb(75, 75, 75);
@@ -111,4 +115,54 @@ body {
 .time {
   font-size: medium;
   background-color: rgb(75, 75, 75);
+  height: 10px;
+  border: solid 2px #eec130;
+}
+.head-width {
+  width: 200px;
+  height: 20px;
+  border: solid 2px #eec130;
+}
+.side-height{
+  height: 30px;
+  border: solid 2px #eec130;
+}
+.window {
+  width: 100%;
+  background-color : rgb(106, 114, 161);
+}
+.cell {
+  width: 100%;
+  text-align: center;
+  max-height: 40px;
+  display: inline-block;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+a.button3{
+  display :inline-block;
+  padding:0.6em 1.8em;
+  margin:0 1.2em 1.2em 0;
+  border-radius:8em;
+  box-sizing: border-box;
+  text-decoration:none;
+  font-family:'Roboto',sans-serif;
+  font-size: 30px;
+  font-weight:300;
+  color:#FFFFFF;
+  background-color:#4eb5f1;
+  text-align:center;
+  transition: all 0.2s;
+  margin-top: 25px;
+}
+a.button3:hover{
+  background-color:#4095c6;
+}
+@media all and (max-width:60em){
+  a.button3{
+    display:block;
+    margin:1em auto;
+  }
 }

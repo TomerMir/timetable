@@ -56,6 +56,7 @@ export default function Login() {
       var date = (new Date()).getTime() + token.data.exp*60000
       localStorage.setItem("tokenExp", date.toString())
       setToken(token.data.token);
+      history.push("/")
     }
     document.getElementsByTagName('html')[0].setAttribute("dir", "ltr");
     return(

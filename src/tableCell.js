@@ -2,21 +2,19 @@ import React, { useState } from 'react';
 import { DropdownList } from 'react-widgets'
 import "react-widgets/dist/css/react-widgets.css";
 
-const lessons = ["עברית","אנגלית","תוכנה","פיזיקה","ספרות","תנך","מתמטיקה","היסטוריה","אזרחות", "חלון"]
+const lessons = ["עברית","אנגלית","תוכנה","פיזיקה","ספרות","תנ״ך","מתמטיקה","היסטוריה","אזרחות", "חלון"]
 
 export default function Cell(props){
     if (props.isEditable) {
-        let widget = (
-            <div style={{width: 100}}>
+        return (
+            <div>
                 <DropdownList
-                    //onChange={value => alert(value)}
-                    defaultValue={props.lessonName.toString()}
+                    onChange={value => props.changeValue(value, props.index)}
+                    defaultValue={props.lessonName}
                     data={lessons}
                 />
-            </div>
-            
-        )    
-        return widget  
+            </div>       
+        )
     } 
-    return(<div><h2>{props.lessonName}</h2></div>)
+    return(<div className ='cell'><p>{props.lessonName == "חלון" ? " " : props.lessonName}</p></div>)
 }
