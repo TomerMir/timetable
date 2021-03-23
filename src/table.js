@@ -69,11 +69,11 @@ class Table extends Component {
 			this.setState({editOrSave : "save"})
     	}
     	else{
+			this.setState({editOrSave : "edit"})
 			let api_result = await api.PostDataAuth('api/changetable', {'Content-Type': 'application/json'}, {'data' : this.state.data})
 			if (!api_result || !api_result.data.status) {
 				this.setState({error : "Faild to commit to the database"})
 			}
-			this.setState({editOrSave : "edit"})
 		}
 	}
 
