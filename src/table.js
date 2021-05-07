@@ -20,13 +20,14 @@ class Table extends Component {
 		const bible = "תנ״ך"
 		const computer_science = "תוכנה"
 		const education = "חינוך"
+		const sports = "ספורט"
 
 		this.state = {
 			edit: false,
 		   	editOrSave : "edit",
 			data : [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
 			highlight : this.setHighlight(),
-			lessons : {0:window, 1:hebrew, 2:english, 3:history, 4:ezrahut, 5:literature, 6:maths, 7:physics, 8:bible, 9:computer_science, 10:education},
+			lessons : {0:window, 1:hebrew, 2:english, 3:history, 4:ezrahut, 5:literature, 6:maths, 7:physics, 8:bible, 9:computer_science, 10:education, 11:sports},
 			reverse_lessons : {},
 			error : ""
 	   };  
@@ -41,6 +42,7 @@ class Table extends Component {
 	   this.state.reverse_lessons[bible] = 8
 	   this.state.reverse_lessons[computer_science] = 9
 	   this.state.reverse_lessons[education] = 10
+	   this.state.reverse_lessons[sports] = 11
 	}
 
 	async componentDidMount() {
@@ -90,40 +92,40 @@ class Table extends Component {
 		let time = 100 * d.getHours() + d.getMinutes();
 		if (day == 6) return -1;
 		let row = 0;
-		if (time >= 745 && time < 820) {
+		if (time >= 745 && time < 830) {
 			row = 0;
 		}
-		else if (time >= 820 && time < 900) {
+		else if (time >= 830 && time < 915) {
 			row = 1;
 		}
-		else if (time >= 900 && time < 1005) {
+		else if (time >= 915 && time < 1015) {
 			row = 2;
 		}
-		else if (time >= 1005 && time < 1045) {
+		else if (time >= 1015 && time < 1100) {
 			row = 3;
 		}
-		else if (time >= 1045 && time < 1155) {
+		else if (time >= 1100 && time < 1200) {
 			row = 4;
 		}
-		else if (time >= 1155 && time < 1230) {
+		else if (time >= 1200 && time < 1245) {
 			row = 5;
 		}
-		else if (time >= 1230 && time < 1355) {
+		else if (time >= 1245 && time < 1355) {
 			row = 6;
 		}
-		else if (time >= 1355 && time < 1430) {
+		else if (time >= 1355 && time < 1440) {
 			row = 7;
 		}
-		else if (time >= 1430 && time < 1520) {
+		else if (time >= 1440 && time < 1530) {
 			row = 8;
 		}
-		else if (time >= 1520 && time < 1600) {
+		else if (time >= 1530 && time < 1615) {
 			row = 9;
 		}
-		else if (time >= 1615 && time < 1655) {
+		else if (time >= 1615 && time < 1700) {
 			row = 10;
 		}
-		else if (time >= 1655 && time < 1730) {
+		else if (time >= 1700 && time < 1745) {
 			row = 11;
 		}
 		else return -1;
@@ -156,7 +158,7 @@ class Table extends Component {
 					<td className={this.state.highlight==60? "now" : "hour"} rowSpan="2"><Cell lessonName={this.state.lessons[this.state.data[60]]} changeValue={this.valueChanged} index={60} isEditable={this.state.edit}></Cell></td>
 				</tr>
 				<tr>
-					<td className="time">08:20 → 07:45</td>
+					<td className="time">08:30 → 07:45</td>
 				</tr>
 				<tr>
 					<td className = 'side-height'>שיעור #2</td>
@@ -168,7 +170,7 @@ class Table extends Component {
 					<td className={this.state.highlight==61? "now" : "hour"} rowSpan="2"><Cell lessonName={this.state.lessons[this.state.data[61]]} changeValue={this.valueChanged} index={61} isEditable={this.state.edit}></Cell></td>
 				</tr>
 				<tr>
-					<td className="time">09:00 → 08:20</td>
+					<td className="time">09:15 → 08:30</td>
 				</tr>
 				<tr>
 					<td className = 'side-height'> שיעור #3</td>
@@ -180,7 +182,7 @@ class Table extends Component {
 					<td className={this.state.highlight==62? "now" : "hour"} rowSpan="2"><Cell lessonName={this.state.lessons[this.state.data[62]]} changeValue={this.valueChanged} index={62} isEditable={this.state.edit}></Cell></td>
 				</tr>
 				<tr>
-					<td className="time">10:05 → 09:30</td>
+					<td className="time">10:15 → 09:30</td>
 				</tr>
 				<tr>
 					<td className = 'side-height'>שיעור #4</td>
@@ -192,7 +194,7 @@ class Table extends Component {
 					<td className={this.state.highlight==63? "now" : "hour"} rowSpan="2"><Cell lessonName={this.state.lessons[this.state.data[63]]} changeValue={this.valueChanged} index={63} isEditable={this.state.edit}></Cell></td>
 				</tr>
 				<tr>
-					<td className="time">10:45 → 10:05</td>
+					<td className="time">11:00 → 10:15</td>
 				</tr>
 				<tr>
 					<td className = 'side-height'>שיעור #5</td>
@@ -204,7 +206,7 @@ class Table extends Component {
 					<td className={this.state.highlight==64? "now" : "hour"} rowSpan="2"><Cell lessonName={this.state.lessons[this.state.data[64]]} changeValue={this.valueChanged} index={64} isEditable={this.state.edit}></Cell></td>
 				</tr>
 				<tr>
-					<td className="time">11:55 → 11:15</td>
+					<td className="time">12:00 → 11:15</td>
 				</tr>
 				<tr>
 					<td className = 'side-height'>שיעור #6</td>
@@ -216,7 +218,7 @@ class Table extends Component {
 					<td className={this.state.highlight==65? "now" : "hour"} rowSpan="2"><Cell lessonName={this.state.lessons[this.state.data[65]]} changeValue={this.valueChanged} index={65} isEditable={this.state.edit}></Cell></td>
 				</tr>
 				<tr>
-					<td className="time">12:30 → 11:55</td>
+					<td className="time">12:45 → 12:00</td>
 				</tr>
 				<tr>
 					<td className = 'side-height'>שיעור #7</td>
@@ -228,7 +230,7 @@ class Table extends Component {
 					<td className={this.state.highlight==66? "now" : "hour"} rowSpan="2"><Cell lessonName={this.state.lessons[this.state.data[66]]} changeValue={this.valueChanged} index={66} isEditable={this.state.edit}></Cell></td>
 				</tr>
 				<tr>
-					<td className="time">13:55 → 13:15</td>
+					<td className="time">13:55 → 13:10</td>
 				</tr>
 				<tr>
 					<td className = 'side-height'>שיעור #8</td>
@@ -240,7 +242,7 @@ class Table extends Component {
 					<td className={this.state.highlight==67? "now" : "hour"} rowSpan="2"><Cell lessonName={this.state.lessons[this.state.data[67]]} changeValue={this.valueChanged} index={67} isEditable={this.state.edit}></Cell></td>
 				</tr>
 				<tr>
-					<td className="time">14:30 → 13:55</td>
+					<td className="time">14:40 → 13:55</td>
 				</tr>
 				<tr>
 					<td className = 'side-height'>שיעור #9</td>
@@ -252,7 +254,7 @@ class Table extends Component {
 					<td className={this.state.highlight==68? "now" : "hour"} rowSpan="2"><Cell lessonName={this.state.lessons[this.state.data[68]]} changeValue={this.valueChanged} index={68} isEditable={this.state.edit}></Cell></td>
 				</tr>
 				<tr>
-					<td className="time">15:20 → 14:45</td>
+					<td className="time">15:30 → 14:45</td>
 				</tr>
 				<tr>
 					<td className = 'side-height'>שיעור #10</td>
@@ -264,7 +266,7 @@ class Table extends Component {
 					<td className={this.state.highlight==69? "now" : "hour"} rowSpan="2"><Cell lessonName={this.state.lessons[this.state.data[69]]} changeValue={this.valueChanged} index={69} isEditable={this.state.edit}></Cell></td>
 				</tr>
 				<tr>
-					<td className="time">16:00 → 15:20</td>
+					<td className="time">16:15 → 15:30</td>
 				</tr>
 		  		<tr>
 					<td className = 'side-height'>שיעור #11</td>
@@ -276,7 +278,7 @@ class Table extends Component {
 					<td className={this.state.highlight==70? "now" : "hour"} rowSpan="2"><Cell lessonName={this.state.lessons[this.state.data[70]]} changeValue={this.valueChanged} index={70} isEditable={this.state.edit}></Cell></td>
 				</tr>
 				<tr>
-					<td className="time">16:55 → 16:15</td>
+					<td className="time">17:00 → 16:15</td>
 				</tr>
 		  		<tr>
 					<td className = 'side-height'>שיעור #12</td>
@@ -288,7 +290,7 @@ class Table extends Component {
 					<td className={this.state.highlight==71? "now" : "hour"} rowSpan="2"><Cell lessonName={this.state.lessons[this.state.data[71]]} changeValue={this.valueChanged} index={71} isEditable={this.state.edit}></Cell></td>
 				</tr>
 				<tr>
-					<td className="time">17:30 → 16:55</td>
+					<td className="time">17:45 → 17:00</td>
 				</tr>
 			</table>
 		  <a onClick={this.changeEdit} className='button3'>{this.state.editOrSave}</a>

@@ -1,6 +1,6 @@
 import useToken from "./token"
 
-const host = "http://mirmo.ddns.net:5000/"
+const host = "http://localhost:5000/"
 
 async function fetchData(dataSource) {
     try {
