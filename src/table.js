@@ -2,6 +2,9 @@ import { Helmet, renderStatic } from 'react-helmet'
 import Cell from './tableCell'
 import React, { Component } from 'react';
 import api from './api'
+import { withRouter } from 'react-router-dom';
+
+
 
 class Table extends Component {
 
@@ -75,8 +78,14 @@ class Table extends Component {
 			let api_result = await api.PostDataAuth('api/changetable', {'Content-Type': 'application/json'}, {'data' : this.state.data})
 			if (!api_result || !api_result.data.status) {
 				this.setState({error : "Faild to commit to the database"})
+				window.location.reload()
 			}
 		}
+	}
+
+	logout = () => {
+		localStorage.clear()
+		this.props.history.push('/login')
 	}
 
 	valueChanged = (value, index) => {
@@ -138,6 +147,7 @@ class Table extends Component {
 		  <Helmet>
 			<title>Timetable</title>
 		  </Helmet>
+		  <a onClick={this.logout} className='logout'>Logout</a>
 		  <table className="timetable">
 				<tr>
 					<td style={{border: "double 2px #eec130"}}>המערכת שלך</td>
@@ -293,10 +303,10 @@ class Table extends Component {
 					<td className="time">17:45 → 17:00</td>
 				</tr>
 			</table>
-		  <a onClick={this.changeEdit} className='button3'>{this.state.editOrSave}</a>
+		  <a onClick={this.changeEdit} className='editOrSave'>{this.state.editOrSave}</a>
 		  <h2 style={{color: 'red'}}>{this.state.error}</h2>
 		</div>
 	  )
   }
 }
-export default Table;
+export default withRouter(Table);

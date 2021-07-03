@@ -138,7 +138,7 @@ body {
   align-items: center;
 }
 
-a.button3{
+a.editOrSave{
   display :inline-block;
   padding:0.6em 1.8em;
   margin:0 1.2em 1.2em 0;
@@ -154,8 +154,31 @@ a.button3{
   transition: all 0.2s;
   margin-top: 25px;
 }
-a.button3:hover{
+a.editOrSave:hover{
   background-color:#4095c6;
+}
+
+a.logout{
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  display :inline-block;
+  padding:0.6em 1.8em;
+  margin:0 1.2em 1.2em 0;
+  border-radius:8em;
+  box-sizing: border-box;
+  text-decoration:none;
+  font-family:'Roboto',sans-serif;
+  font-size: 20px;
+  font-weight:300;
+  color:#FFFFFF;
+  background-color:#b82020;
+  text-align:center;
+  transition: all 0.2s;
+  margin-top: 25px;
+}
+a.logout:hover{
+  background-color:#a11b1b;
 }
 @media all and (max-width:60em){
   a.button3{
