@@ -8,7 +8,7 @@ var sha256 = require('js-sha256').sha256;
 
 
 export default function Login() {
-    const { setToken, validateToken } = useToken();
+    const { setToken, validateToken, isAdmin } = useToken();
     let history = useHistory()
     if (validateToken()) {
       history.push("/")

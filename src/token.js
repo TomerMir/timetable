@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import jwt_decode from 'jwt-decode';
+
 
 export default function useToken() {
   const getToken = () => {
@@ -12,6 +14,16 @@ export default function useToken() {
     const exp = JSON.parse(tokenExpString);
     return exp
   };
+
+  const decodeToken = () => {
+    const decodedToken = jwt_decode(getToken());
+    return decodedToken;
+  }
+
+  const isAdmin = () =>{
+    const decodedToken = decodeToken();
+    return decodedToken["admin"];
+  }
 
   const saveToken = userToken => {
     localStorage.setItem('token', JSON.stringify(userToken));
@@ -49,6 +61,7 @@ export default function useToken() {
   return {
     setToken: saveToken,
     validateToken,
-    getToken
+    getToken,
+    isAdmin
   }
 }
