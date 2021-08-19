@@ -98,6 +98,9 @@ class Table extends Component {
 
 	isAdmin = () => {
 		const tokenString = localStorage.getItem('token');
+		if (!tokenString) {
+            return false;
+        }
 		const userToken = JSON.parse(tokenString);
 		const decodedToken = jwt_decode(userToken);
 		return decodedToken["admin"];

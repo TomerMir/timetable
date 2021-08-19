@@ -48,6 +48,9 @@ class AdminPanel extends Component {
     
     isAdmin = () => {
 		const tokenString = localStorage.getItem('token');
+        if (!tokenString) {
+            return false;
+        }
 		const userToken = JSON.parse(tokenString);
 		const decodedToken = jwt_decode(userToken);
 		return decodedToken["admin"];
@@ -114,7 +117,7 @@ class AdminPanel extends Component {
         return(
             <div>
                 <Helmet>
-			        <title>Timetable</title>
+			        <title>Admin</title>
 		        </Helmet>
                 <a onClick={this.logout} className='logout'>Logout</a>
 		        <a onClick={() => this.props.history.push('/')} className='toAdminPage'>Timetable</a>
