@@ -3,6 +3,8 @@ import Cell from './tableCell'
 import React, { Component } from 'react';
 import api from './api'
 import { withRouter } from 'react-router-dom';
+import jwt_decode from 'jwt-decode';
+
 
 
 
@@ -52,12 +54,11 @@ class Table extends Component {
 		try {
 			const api_result = await api.FetchDataAuth('api/gettable')
   			if (api_result.data==false) {
-  				this.setState({error : "Can't connect to the server"})
-				  return
+				this.logout()
   			}
  			if (api_result.data.status==false) {
 				console.log("result.data.status = false")
-				this.setState({error : "API Server refused"})
+				this.setState({error : api_result.data.err})
 				return
   			}
  		 	this.setState({data : api_result.data.data})
@@ -93,6 +94,13 @@ class Table extends Component {
 		let items = this.state.data
 		items[index] = this.state.reverse_lessons[value]
 		this.setState({data : items})
+	}
+
+	isAdmin = () => {
+		const tokenString = localStorage.getItem('token');
+		const userToken = JSON.parse(tokenString);
+		const decodedToken = jwt_decode(userToken);
+		return decodedToken["admin"];
 	}
 
 	setHighlight = () => {
@@ -142,12 +150,18 @@ class Table extends Component {
 	}
 
   render(){
+	var adminButton = <a onClick={() => this.props.history.push('/admin')} className='toAdminPage'>Admin</a>
+	if (!this.isAdmin()) {
+		adminButton = null;
+	}
 	return(
 		<div style={{textAlign:"center"}}>
 		  <Helmet>
 			<title>Timetable</title>
 		  </Helmet>
 		  <a onClick={this.logout} className='logout'>Logout</a>
+		  {adminButton}
+		  {}
 		  <table className="timetable">
 				<tr>
 					<td style={{border: "double 2px #eec130"}}>המערכת שלך</td>

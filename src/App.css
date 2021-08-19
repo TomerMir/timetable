@@ -180,6 +180,74 @@ a.logout{
 a.logout:hover{
   background-color:#a11b1b;
 }
+
+a.deleteAccount{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  display :inline-block;
+  padding:0.6em 1.8em;
+  margin:0 1.2em 1.2em 0;
+  border-radius:8em;
+  box-sizing: border-box;
+  text-decoration:none;
+  font-family:'Roboto',sans-serif;
+  font-size: 20px;
+  font-weight:300;
+  color:#FFFFFF;
+  background-color:#b82020;
+  text-align:center;
+  transition: all 0.2s;
+}
+a.deleteAccount:hover{
+  background-color:#a11b1b;
+}
+
+a.toAdminPage{
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  display :inline-block;
+  padding:0.6em 1.8em;
+  margin:0 1.2em 1.2em 0;
+  border-radius:8em;
+  box-sizing: border-box;
+  text-decoration:none;
+  font-family:'Roboto',sans-serif;
+  font-size: 20px;
+  font-weight:300;
+  color:#FFFFFF;
+  background-color:#5083c7;
+  text-align:center;
+  transition: all 0.2s;
+  margin-top: 100px;
+}
+a.toAdminPage:hover{
+  background-color:#2c71cc;
+}
+
+.alignCenter{
+  text-align: center;
+  vertical-align: middle;
+  display: table;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.admintable {
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  font-size: x-large;
+  border-collapse: collapse;
+  height: 33%;
+  width: 33%;
+  margin-top: 25px;
+  table-layout:fixed;
+  word-break:break-all;
+  table-layout: fixed;
+}
+
 @media all and (max-width:60em){
   a.button3{
     display:block;
