@@ -108,11 +108,6 @@ class AdminPanel extends Component {
         )
         
     }
-///<UserCell username={"tomer"} your_user={this.state.myUser} isAdmin={true} adminChange={this.adminChange} deleteUser={this.delete_user}></UserCell>
-///<UserCell username={"tomermir"} your_user={this.state.myUser} isAdmin={true} adminChange={this.adminChange} deleteUser={this.delete_user}></UserCell>
-
-///<h2>{this.state.error}</h2>
-
     render(){
         return(
             <div>

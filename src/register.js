@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import api from './api'
 import useToken from './token'
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet'
 var sha256 = require('js-sha256').sha256;
 
@@ -67,6 +67,16 @@ export default function Register()  {
             <input type="text" onClick={e => setErrorText('')} onChange={e => setUserName(e.target.value)} placeholder="Username"/>
             <input type="password" onClick={e => setErrorText('')} onChange={e => setPassword(e.target.value)} placeholder="Password"/>
             <input type="submit" value="Register"/>
+            <table>
+            <tr>
+            <th>
+              <p>Already have an account?</p>
+            </th>
+            <th>
+              <Link to="/login">Login</Link>
+            </th>
+            </tr>
+          </table>
           </form>
           <h2 style={{color: 'red'}}>{errorText}</h2>
         </div>

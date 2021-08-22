@@ -1,6 +1,6 @@
 import useToken from "./token"
 
-const host = "https://mirmo.ddns.net/"
+const host = "http://10.100.102.11:5000/"
 
 async function fetchData(dataSource) {
     try {
@@ -58,7 +58,7 @@ async function fetchData(dataSource) {
     const token = getToken()
     try {
       if (!validateToken()) {
-        return {data: false, error: "invalid token"}
+        return {data: false, error: "Invalid token"}
       }
       headers.Authorization = 'Bearer '+ token.toString() 
       const data = await fetch(host+dataSource, {
