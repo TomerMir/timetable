@@ -49,7 +49,7 @@ export default function Register()  {
         }
 
        if (token.data.status == false) {
-            setErrorText("Username already taken, try another one...")
+            setErrorText(token.data.err)
             return
         }
 

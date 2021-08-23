@@ -34,7 +34,8 @@ class Table extends Component {
 			highlight : this.setHighlight(),
 			lessons : {0:window, 1:hebrew, 2:english, 3:history, 4:ezrahut, 5:literature, 6:maths, 7:physics, 8:bible, 9:computer_science, 10:education, 11:sports},
 			reverse_lessons : {},
-			error : ""
+			error : "",
+			changedCells : []
 	   };  
 	   this.state.reverse_lessons[window] = 0
 	   this.state.reverse_lessons[hebrew] = 1
@@ -57,7 +58,6 @@ class Table extends Component {
 				this.logout()
   			}
  			if (api_result.data.status==false) {
-				console.log("result.data.status = false")
 				this.setState({error : api_result.data.err})
 				return
   			}
@@ -76,7 +76,14 @@ class Table extends Component {
     	}
     	else{
 			this.setState({editOrSave : "edit"})
-			let api_result = await api.PostDataAuth('api/changetable', {'Content-Type': 'application/json'}, {'data' : this.state.data})
+			let data_to_send = []
+			for (let i = 0; i < this.state.changedCells.length; i++) {
+				const element = this.state.changedCells[i];
+				const index = parseInt(Object.keys(element)[0])
+				data_to_send.push([index, this.state.data[index]])
+			}
+			let api_result = await api.PostDataAuth('api/changetable', {'Content-Type': 'application/json'}, {'data' : data_to_send})
+			this.setState({changedCells : []})
 			if (!api_result || !api_result.data.status) {
 				this.setState({error : "Faild to commit to the database"})
 				window.location.reload()
@@ -90,10 +97,25 @@ class Table extends Component {
 	}
 
 	valueChanged = (value, index) => {
-		console.log("value = " + value +"  index = "+ index)
+		var flag = false;
+		for (let i = 0; i < this.state.changedCells.length; i++) {
+			if (this.state.changedCells[i][index] == this.state.reverse_lessons[value]) {
+				this.state.changedCells.splice(i, 1)
+				flag = true;
+				break;
+			}
+			if (Object.keys(this.state.changedCells[i])[0] == index) {
+				flag = true;
+				break;
+			}
+		}
+		if (!flag) {
+			this.state.changedCells.push({[index]: this.state.data[index]})
+		}
 		let items = this.state.data
 		items[index] = this.state.reverse_lessons[value]
 		this.setState({data : items})
+
 	}
 
 	isAdmin = () => {

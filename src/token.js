@@ -33,7 +33,6 @@ export default function useToken() {
     const token = getToken()
     try {
       if(!token){
-        console.log("Token was null")
         localStorage.clear()
         return false
       }
