@@ -50,7 +50,7 @@ export default function Login() {
           return
       }
      if (token.data.status == false) {
-          setErrorText("Incorrect username or password")
+          setErrorText(token.data.err)
           return
       }
       var date = (new Date()).getTime() + token.data.exp*60000
