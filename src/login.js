@@ -4,6 +4,8 @@ import api from './api'
 import { Link, useHistory } from 'react-router-dom';
 import useToken from './token'
 import { Helmet } from 'react-helmet'
+import Checkbox from "react-custom-checkbox";
+
 var sha256 = require('js-sha256').sha256;
 
 
@@ -15,6 +17,7 @@ export default function Login() {
     }
     const [username, setUserName] = useState('');
     const [password, setPassword] = useState('');
+    const [stayLoggedIn, setStayLoggedIn] = useState('');
     const [errorText, setErrorText] = useState()
 
     const handleSubmit = async e => {
@@ -43,7 +46,7 @@ export default function Login() {
       const token = await api.postData(
         "api/login",
         {'Content-Type': 'application/json'},
-        {"username" : username, "password" : sha256(password)})
+        {"username" : username, "password" : sha256(password), "stayLoggedIn" : stayLoggedIn})
       if (token.data == false) {
           console.log("Failiure " + token.error)
           setErrorText("Error")
@@ -78,8 +81,19 @@ export default function Login() {
               <Link to="/register">Register</Link>
             </th>
             </tr>
+            
           </table>
         </form>
+        <table>
+        <tr>
+              <th>
+                <p>Stay logged in?</p>
+              </th>
+              <td>
+                <input type="checkbox" className="big" onChange={e => setStayLoggedIn(e.target.checked)}/>
+              </td>
+            </tr>
+        </table>
         <h2 style={{color: 'red'}}>{errorText}</h2>
       </div>
 
