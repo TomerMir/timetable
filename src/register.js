@@ -5,19 +5,27 @@ import { useHistory, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet'
 var sha256 = require('js-sha256').sha256;
 
-
+//Function to the register panel
 export default function Register()  {
     let history = useHistory()
+
+    //Check if user is already authorized with valid token
     const { validateToken } = useToken();
     if (validateToken()) {
+      //User is authorized, redirected to the main page
       history.push("/")
     }
+
+    //Create states
     const [username, setUserName] = useState('');
     const [password, setPassword] = useState('');
     const [errorText, setErrorText] = useState()
+
+    //Function that submits and validates the data after the user clicks submit
     const handleSubmit = async e => {
         e.preventDefault();
-  
+
+        //Validates the data
         if (username.length < 5) {
           setErrorText("Username need to be at least 5 characters long")
           return
@@ -37,22 +45,24 @@ export default function Register()  {
           setErrorText("Password cant be longer than 20")
           return
         }
-  
+        
+        //Posts the data for the API server
         const token = await api.postData(
           "api/register",
           {'Content-Type': 'application/json'},
-          {"username" : username, "password" : sha256(password)})
+          {"username" : username, "password" : sha256(password)}) //Sends the hash of the password
         if (token.data == false) {
             console.log("Failiure " + token.error)
             setErrorText("Error")
             return
         }
 
+      //If the server returned error
        if (token.data.status == false) {
             setErrorText(token.data.err)
             return
         }
-
+        //Redirects to login page
         history.push('/login')
       }
       

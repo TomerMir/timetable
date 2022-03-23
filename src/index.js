@@ -6,6 +6,7 @@ import Register from './register'
 import Login from './login'
 import AdminPanel from './adminPanel'
 
+//Mian function to route all urls to their corresponding pages
 const Routing = () => {
   return(
     <Router>

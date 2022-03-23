@@ -7,13 +7,13 @@ import jwt_decode from 'jwt-decode';
 
 
 
-
+//Class of the timetable
 class Table extends Component {
 
 	constructor(props) {
 		super(props);
 		document.getElementsByTagName('html')[0].setAttribute("dir", "rtl")
-
+		//Names of the lessons
 		const hebrew = "עברית"
 		const english = "אנגלית"
 		const history = "היסטוריה"
@@ -28,15 +28,26 @@ class Table extends Component {
 		const sports = "ספורט"
 
 		this.state = {
-			edit: false,
-		   	editOrSave : "edit",
-			data : [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-			highlight : this.setHighlight(),
-			lessons : {0:window, 1:hebrew, 2:english, 3:history, 4:ezrahut, 5:literature, 6:maths, 7:physics, 8:bible, 9:computer_science, 10:education, 11:sports},
-			reverse_lessons : {},
-			error : "",
-			changedCells : []
+			edit: false, //Variable that says if the table is in edit mode
+
+		   	editOrSave : "edit", //The text thta is displayed on the "edit" button
+
+			data : [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+				0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0], //Data that represents each lesson in the table
+
+			highlight : this.setHighlight(), //The current lesson cell to highlight
+
+			lessons : {0:window, 1:hebrew, 2:english, 3:history, 4:ezrahut, 5:literature, 6:maths, 
+				7:physics, 8:bible, 9:computer_science, 10:education, 11:sports}, //Dictionary that converts each lesson's name to it's numerical representation.
+				//In the database, the lessons are saved in their numerical representation.
+
+			reverse_lessons : {}, //Dictionary to convert each lesson's numerical representation to it's name
+
+			error : "", //The error that is displayed on the screen
+
+			changedCells : [] //The cells that have changed, to send to the api
 	   };  
+	   //Initialize the dictionary
 	   this.state.reverse_lessons[window] = 0
 	   this.state.reverse_lessons[hebrew] = 1
 	   this.state.reverse_lessons[english] = 2
@@ -51,73 +62,111 @@ class Table extends Component {
 	   this.state.reverse_lessons[sports] = 11
 	}
 
+
+	//Function that is called after the window is loaded.
 	async componentDidMount() {
 		try {
+
+			//Gets the table from the api
 			const api_result = await api.FetchDataAuth('api/gettable')
+
+            //If there was an error while fetching the data, logout
   			if (api_result.data==false) {
 				this.logout()
   			}
+
+            //If the server status if false:
  			if (api_result.data.status==false) {
 				this.setState({error : api_result.data.err})
 				return
   			}
+
+			//Set the data state
  		 	this.setState({data : api_result.data.data})
 		} 
 		catch (error) {
 			this.setState({error : "Unexpected error occured"})
 		}
 	}
-  
+	
+
+	//Function that called when the "edit" or "save" button is clicked.
 	changeEdit =  async() => {
+		//Swap the edit table mode
       	this.setState({edit : !this.state.edit})
+		
+		//Remove any shown errors
 		this.setState({error : ""})
+
+		//If the user clicked edit button
       	if (this.state.editOrSave == "edit") {
+			//Change the button's text to "save"
 			this.setState({editOrSave : "save"})
     	}
     	else{
+			//Change the button's text to "edit"
 			this.setState({editOrSave : "edit"})
+
+			//Checks wich data is changed and need to be sent to the api.
 			let data_to_send = []
 			for (let i = 0; i < this.state.changedCells.length; i++) {
 				const element = this.state.changedCells[i];
 				const index = parseInt(Object.keys(element)[0])
 				data_to_send.push([index, this.state.data[index]])
 			}
+
+			//Sends the changed cells new values to the api and resets the changedCells list.
 			let api_result = await api.PostDataAuth('api/changetable', {'Content-Type': 'application/json'}, {'data' : data_to_send})
 			this.setState({changedCells : []})
+
+			//If there was an error:
 			if (!api_result || !api_result.data.status) {
 				this.setState({error : "Faild to commit to the database"})
 				window.location.reload()
 			}
 		}
 	}
-
-	logout = () => {
+	//Log out 
+    logout = () => {
+        //Delets the token and the expiration date from the local storage
 		localStorage.clear()
+        //Redirects to login page
 		this.props.history.push('/login')
 	}
 
+	//Called when a value of a cell is changed, and changes the array of changed cells.
+	//index -> the index of the canged cell
+	//value -> the new value of the changed cell
 	valueChanged = (value, index) => {
+
 		var flag = false;
+		//Loops over the current changed cells.
 		for (let i = 0; i < this.state.changedCells.length; i++) {
+			//If the cell was already changed but hasn't been sent to the api and it was changed again,
+			//so it removes him from the list and exits the loop.
 			if (this.state.changedCells[i][index] == this.state.reverse_lessons[value]) {
 				this.state.changedCells.splice(i, 1)
 				flag = true;
 				break;
 			}
+			//If the user had clicked on the same value that the lesson had before.
 			if (Object.keys(this.state.changedCells[i])[0] == index) {
 				flag = true;
 				break;
 			}
 		}
+		//If the cell actually changed, insert it to the list.
 		if (!flag) {
 			this.state.changedCells.push({[index]: this.state.data[index]})
 		}
+		//Change the actual cell's value.
 		let items = this.state.data
 		items[index] = this.state.reverse_lessons[value]
 		this.setState({data : items})
 
 	}
 
+	//Checks if the user is an admin with his token.
 	isAdmin = () => {
 		const tokenString = localStorage.getItem('token');
 		if (!tokenString) {
@@ -128,6 +177,8 @@ class Table extends Component {
 		return decodedToken["admin"];
 	}
 
+	//Function that reutrns the index in the table of the cell.
+	//that represents the curren hour.
 	setHighlight = () => {
 		let d = new Date();
 		let day = d.getDay();
@@ -174,9 +225,14 @@ class Table extends Component {
 		return row+(day*12)
 	}
 
+	//Returns the cell for each hour.
+	//num -> the index of the cell in the data array.
 	getHourCell = (num) => {
 		return(<td className={this.state.highlight==num? "now" : "hour"} rowSpan="2"><Cell lessonName={this.state.lessons[this.state.data[num]]} changeValue={this.valueChanged} index={num} isEditable={this.state.edit}></Cell></td>)
 	}
+
+	//Return a table row for each hour.
+	//lessonNum -> the hour to create the row for.
 	getHours = (lessonNum) =>{
 		const rows = []
 		for (let i = lessonNum-1; i < lessonNum+60; i+=12) {
@@ -189,6 +245,7 @@ class Table extends Component {
 		</tr>)
 	}
 
+	//Renders the page and displays the whole table.
 	render(){
 		var adminButton = <a onClick={() => this.props.history.push('/admin')} className='toAdminPage'>Admin</a>
 		if (!this.isAdmin()) {

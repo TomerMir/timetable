@@ -5,47 +5,59 @@ import UserCell from './adminPanelRow';
 import jwt_decode from 'jwt-decode';
 
 
-
+//The admin panel
 class AdminPanel extends Component {
+    
     constructor(props){
         super(props)
+        
+        //If the user is not an admin, reutrn him to the main page.
         if (!this.isAdmin()) {
             this.props.history.push('/')
         }
         document.getElementsByTagName('html')[0].setAttribute("dir", "ltr")
         this.state = {
-            data : [],
-            error: "",
-            myUser : ""
+            data : [], //Data that recived from the api
+            error: "", //The error to display
+            myUser : "" //The user's username
         }
     }
+
+    //Function that is called after the window is loaded.
     async componentDidMount() {
+
 		try {
+            //Gets the users from the api
 			const api_result = await api.FetchDataAuth('api/getusers')
+
+            //If there was an error while fetching the data, logout
   			if (api_result.data==false) {
   				this.logout()
   			}
+
+            //If the server status if false:
  			if (api_result.data.status==false) {
 				this.setState({error : api_result.data.err})
 				return
   			}
+            //Sets the data
  		 	this.setState({data : api_result.data.data})
             this.setState({myUser : api_result.data.your_user})
-            console.log(this.state.data)
-            console.log(this.state.data[0][0])
-            console.log(this.state.data[1])
-
 		} 
 		catch (error) {
 			this.setState({error : "Unexpected error occured " + error})
 		}
 	}
 
+    //Log out 
     logout = () => {
+        //Delets the token and the expiration date from the local storage
 		localStorage.clear()
+        //Redirects to login page
 		this.props.history.push('/login')
 	}
     
+    //Checks if the user is an admin with his token
     isAdmin = () => {
 		const tokenString = localStorage.getItem('token');
         if (!tokenString) {
@@ -56,12 +68,19 @@ class AdminPanel extends Component {
 		return decodedToken["admin"];
 	}
 
+    //Change the role of a user, if he's an admin, make him a normal user, else make him an admin.
+    //Username -> username to change his role.
     adminChange =  async(username) => {
         try {
+            //Sends the request to change the role to the api
             const api_result = await api.PostDataAuth("api/changeadmin", {'Content-Type': 'application/json'}, {'username' : username})
+            
+            //If there was an error while fetching the data, logout            
             if (api_result.data == false) {
                 this.logout()
             }
+
+            //If the server status if false:
             if (api_result.data.status==false) {
 				this.setState({error : api_result.data.err})
 				return
@@ -72,16 +91,25 @@ class AdminPanel extends Component {
         }
     }
 
+    //Deletes a user.
+    //username -> user to delete.
     delete_user = async(username) => {
         try {
+            //Sends the request to delete the user to the api.
             const api_result = await api.PostDataAuth("api/deleteuser", {'Content-Type': 'application/json'}, {'username' : username})
+
+            //If there was an error while fetching the data, logout            
             if (api_result.data == false) {
                 this.logout()
             }
+
+            //If the server status if false:
             if (api_result.data.status==false) {
 				this.setState({error : api_result.data.err})
 				return
   			}
+
+            //Reload the window so the table of the users will refresh
             window.location.reload()
         }
         catch (error) {
@@ -89,6 +117,7 @@ class AdminPanel extends Component {
         }
     }
 
+    //Creates the users table.
     createTable = () => {
         return (
             <table className="admintable">

@@ -2,9 +2,8 @@ import React, { useState } from 'react';
 import Checkbox from "react-custom-checkbox";
 import * as Icon from "react-icons/fi";
 
-
+//Class that represents each user cell in the users table.
 export default function UserCell(props){
-
     return(
         <tr>
             <td><h4>{props.username}</h4></td>
